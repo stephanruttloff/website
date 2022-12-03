@@ -33,11 +33,11 @@ html, a{
 
 #pipe {
     font-weight: lighter;
-    filter: opacity(.9);
+    animation: blink 1s linear infinite;
 }
-
-#pipe.light {
-    filter: opacity(.1);
+@keyframes blink {
+    0% { opacity: .9; }
+    100% { opacity: .1; }
 }
 
 #links {

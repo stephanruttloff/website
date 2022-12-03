@@ -1,41 +1,49 @@
-const pipe = document.getElementById("pipe");
+const pipeElement = document.getElementById("pipe");
 const messageElement = document.getElementById("message");
+
 const messages = [
   "Hallo",
   "Hi",
   "Hello",
   "Greetings",
   "Hey",
-  "Hello World",
-  "48 65 6C 6C 6F",
-  ["nuqneH"],
-  ["SYN", "~=[,,_,,]:3", "ʕ·ᴥ·ʔ", " 👁️ 👄 👁️ "],
+  "Howdy",
+  "Moin",
+  "G'Day, Mate",
+  [
+    "~=[,,_,,]:3",
+    "ʕ·ᴥ·ʔ",
+    "👁️ 👄 👁️",
+    "48 65 6C 6C 6F",
+    ".... . .-.. .-.. ---",
+    "Wake up, Neo...",
+    "Follow the white rabbit.",
+    "☕️",
+  ],
 ];
-const greetings = ["🫶", "👋", "✌️"];
-const deleteActions = [quickDeleteMessage, untypeMessage];
+const emojis = ["🫶", "👋", "✌️", "🖖"];
 
 let message = "";
 
-function getRand(max) {
-  return Math.round(Math.random() * max);
+function getRandomElement(array) {
+  if (!Array.isArray(array)) throw new Error("Not an array!", array);
+
+  return array[Math.floor(Math.random() * array.length)];
 }
 
 function getMessage() {
-  const m = messages[getRand(messages.length - 1)];
-  const result = Array.isArray(m)
-    ? m[getRand(m.length - 1)]
-    : m + " " + greetings[getRand(greetings.length - 1)];
-  return result == message ? getMessage() : result;
+  const e = getRandomElement(messages);
+  const m = Array.isArray(e) ? getRandomElement(e) : e;
+
+  return message.startsWith(m)
+    ? getMessage()
+    : Array.isArray(e)
+    ? m
+    : m + " " + getRandomElement(emojis);
 }
 
-setInterval(() => {
-  pipe.classList.contains("light")
-    ? pipe.classList.remove("light")
-    : pipe.classList.add("light");
-}, 800);
-
-function select() {
-  messageElement.classList.add("selected");
+function removeLastChar(o) {
+  return Array.from(o).slice(0, -1).join("");
 }
 
 function typeMessage() {
@@ -47,46 +55,36 @@ function typeMessage() {
     message = getMessage();
   }
 
-  if (messageElement.innerText.length === message.length) {
-    setTimeout(
-      deleteActions[
-        Math.round(Math.random() * Math.max(deleteActions.length - 1, 0))
-      ],
+  if (messageElement.innerText.length === message.length)
+    return setTimeout(
+      getRandomElement([quickDeleteMessage, untypeMessage]),
       5000
     );
-    return;
-  }
 
   messageElement.innerText = Array.from(message)
-    .slice(0, messageElement.innerText.length + 1)
+    .slice(0, Array.from(messageElement.innerText).length + 1)
     .join("");
-
-  setTimeout(typeMessage, 120 - Math.round(Math.random() * 40));
+  setTimeout(typeMessage, 100 - Math.round(Math.random() * 40));
 }
 
 function quickDeleteMessage() {
   messageElement.classList.add("selected");
-  pipe.style.visibility = "hidden";
+  pipeElement.style.visibility = "hidden";
 
   setTimeout(() => {
     messageElement.innerText = "";
     messageElement.classList.remove("selected");
-    pipe.style.visibility = "visible";
+    pipeElement.style.visibility = "visible";
     typeMessage();
   }, 300);
 }
 
 function untypeMessage() {
-  if (messageElement.innerText.length === 0) {
-    setTimeout(typeMessage, 100);
-    return;
-  }
+  if (messageElement.innerText.length === 0)
+    return setTimeout(typeMessage, 100);
 
-  messageElement.innerText = Array.from(messageElement.innerText)
-    .slice(0, messageElement.innerText.length - 2)
-    .join("");
-
-  setTimeout(untypeMessage, 100);
+  messageElement.innerText = removeLastChar(messageElement.innerText);
+  setTimeout(untypeMessage, 40);
 }
 
 typeMessage();
