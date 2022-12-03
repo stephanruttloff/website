@@ -1,0 +1,46 @@
+html,
+body {
+    padding: 0;
+    margin: 0;
+    font-family: 'Iosevka Custom Web';
+}
+
+#hero {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+#message.selected {
+    color: white;
+    background-color: #0071E2;
+    padding: 4px;
+    border-radius: 4px;
+}
+
+#pipe {
+    font-weight: lighter;
+    filter: opacity(.9);
+}
+
+#pipe.light {
+    filter: opacity(.1);
+}
+
+#links {
+    list-style: none;
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    top: 16px;
+    right: 16px;
+}
+
+#links li::before {
+    content: '[';
+}
+
+#links li::after {
+    content: ']';
+}
