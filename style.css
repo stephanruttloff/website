@@ -5,6 +5,18 @@ body {
     font-family: 'Iosevka Custom Web';
 }
 
+html, a{
+    background-color: white;
+    color: #2B292D;
+}
+
+@media (prefers-color-scheme: dark) {
+    html, a {
+        background-color: #2B292D;
+        color: white;
+    }
+}
+
 #hero {
     position: absolute;
     top: 50%;
@@ -35,12 +47,17 @@ body {
     padding: 0;
     top: 16px;
     right: 16px;
+    text-align: right;
 }
 
-#links li::before {
+#links li:first-child {
+    margin-bottom: 8px;
+}
+
+#links li a::before {
     content: '[';
 }
 
-#links li::after {
+#links li a::after {
     content: ']';
 }
