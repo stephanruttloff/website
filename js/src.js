@@ -21,13 +21,12 @@ const messages = [
     "☕️",
   ],
 ];
-const emojis = ["🫶", "👋", "✌️", "🖖"];
+const emojis = ["👋", "✌️", "🖖"];
 
 let message = "";
+let view = "";
 
 function getRandomElement(array) {
-  if (!Array.isArray(array)) throw new Error("Not an array!", array);
-
   return array[Math.floor(Math.random() * array.length)];
 }
 
@@ -47,22 +46,19 @@ function removeLastChar(o) {
 }
 
 function typeMessage() {
-  if (
-    messageElement.innerText.length === 0 ||
-    !message.includes(messageElement.innerText)
-  ) {
-    messageElement.innerText = "";
+  if (view.length === 0 || !message.includes(view)) {
+    view = "";
     message = getMessage();
   }
 
-  if (messageElement.innerText.length === message.length)
+  if (view.length === message.length)
     return setTimeout(
       getRandomElement([quickDeleteMessage, untypeMessage]),
       5000
     );
 
-  messageElement.innerText = Array.from(message)
-    .slice(0, Array.from(messageElement.innerText).length + 1)
+  messageElement.innerText = view = Array.from(message)
+    .slice(0, Array.from(view).length + 1)
     .join("");
   setTimeout(typeMessage, 100 - Math.round(Math.random() * 40));
 }
@@ -72,7 +68,7 @@ function quickDeleteMessage() {
   pipeElement.style.visibility = "hidden";
 
   setTimeout(() => {
-    messageElement.innerText = "";
+    messageElement.innerText = view = "";
     messageElement.classList.remove("selected");
     pipeElement.style.visibility = "visible";
     typeMessage();
@@ -80,10 +76,9 @@ function quickDeleteMessage() {
 }
 
 function untypeMessage() {
-  if (messageElement.innerText.length === 0)
-    return setTimeout(typeMessage, 100);
+  if (view.length === 0) return setTimeout(typeMessage, 100);
 
-  messageElement.innerText = removeLastChar(messageElement.innerText);
+  messageElement.innerText = view = removeLastChar(view);
   setTimeout(untypeMessage, 40);
 }
 
